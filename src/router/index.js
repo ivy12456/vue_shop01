@@ -8,6 +8,7 @@ import Users from '../components/user/Users.vue'
 import Router from 'vue-router';   //为了解决重复点击router-link报错
 import Rights from '../components/power/Rights.vue'
 import Roles from '../components/power/Roles.vue'
+import Cate from '../components/goods/Cate.vue'
 
 // 为了解决重复点击报错
 const originalPush = Router.prototype.push
@@ -27,11 +28,13 @@ var router= new VueRouter({
       {path:'/welcome',component:Welcome},
       {path:'/users',component:Users},
       {path:'/rights',component:Rights},
-      {path:'/roles',component:Roles}
+      {path:'/roles',component:Roles},
+      {path:'/categories',component:Cate},
     ]}
   ]
 })
 
+// 导航守卫前置
 router.beforeEach((to,from,next)=>{
   if(to.path==='/login') return next();
   var tokenstring=window.sessionStorage.getItem("token");
