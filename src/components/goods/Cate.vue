@@ -171,6 +171,7 @@ export default {
         this.addCateForm.cat_pid=0;
         this.addCateForm.cat_level=0;
     },
+    // 添加分类
     addCate(){
       this.$refs.addCateFormRef.validate(async valid=>{
         if(!valid) return 
@@ -181,8 +182,9 @@ export default {
         this.getCatelist()
         this.addCateVisible = false
       })
-      
+      dfffffffffff
     }
+
   }
 };
 </script>
@@ -196,5 +198,8 @@ export default {
     width:100%;
 }
 
+.el-scrollbar__wrap{
+  height:300px!important
+}
 
 </style>
