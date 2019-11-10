@@ -13,6 +13,7 @@ import Cate from '../components/goods/Cate.vue'
 import Params from '../components/goods/Params.vue'
 import GoodList from '../components/goods/List.vue'
 import Add from '../components/goods/add.vue'
+import Order from '../components/order/Order.vue'
 
 // 为了解决重复点击报错
 const originalPush = Router.prototype.push
@@ -37,7 +38,8 @@ var router= new VueRouter({
       {path:'/categories',component:Cate},
       {path:'/params',component:Params},
       {path:'/goods',component:GoodList},
-      {path:'/goods/add',component:Add}
+      {path:'/goods/add',component:Add},
+      {path:'/orders',component:Order},
     ]}
   ]
 })
