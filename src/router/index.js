@@ -11,6 +11,8 @@ import Roles from '../components/power/Roles.vue'
 import Order from '../components/order/order.vue'
 import Cate from '../components/goods/Cate.vue'
 import Params from '../components/goods/Params.vue'
+import GoodList from '../components/goods/List.vue'
+import Add from '../components/goods/add.vue'
 
 // 为了解决重复点击报错
 const originalPush = Router.prototype.push
@@ -33,7 +35,9 @@ var router= new VueRouter({
       {path:'/roles',component:Roles},
       {path:'/orders',component:Order},
       {path:'/categories',component:Cate},
-      {path:'/params',component:Params}
+      {path:'/params',component:Params},
+      {path:'/goods',component:GoodList},
+      {path:'/goods/add',component:Add}
     ]}
   ]
 })
