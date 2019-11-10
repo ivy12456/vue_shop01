@@ -18,7 +18,7 @@
         </el-col>
       </el-row>
       <el-table :data="userlist" border stripe>
-        <el-table-column type="index"></el-table-column>
+        <el-table-column type="index" :index="index"></el-table-column>
         <el-table-column prop="username" label="姓名"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="mobile" label="电话"></el-table-column>
@@ -334,6 +334,11 @@ export default {
         this.selectRoleId=''
         this.userInfo={}
     }
+  },
+  computed:{
+    index(){
+      return (this.queryInfo.pagenum-1)*this.queryInfo.pagesize+1
+    },
   }
 };
 </script>

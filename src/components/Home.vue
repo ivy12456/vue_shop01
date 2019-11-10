@@ -21,7 +21,8 @@
                 </template>
 
                 <!-- 二级菜单 -->
-                <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id" @click="saveNavState('/'+subItem.path)">
+                <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id" >
+                  <!-- @click="saveNavState('/'+subItem.path)" -->
                   <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-menu"></i>
@@ -57,7 +58,13 @@ export default {
   },
   created(){
     this.getMenulist();
-    this.activepath=window.sessionStorage.getItem('activepath');
+    this.activepath=location.hash.slice(1)
+    // this.activepath=window.sessionStorage.getItem('activepath');
+  },
+  watch:{
+    $route(to,from){
+      this.activepath=to.path
+    }
   },
   methods:{
       logout(){
@@ -75,10 +82,10 @@ export default {
       toggleCollapse(){
         this.iscollapse=!this.iscollapse;
       },
-      saveNavState(activepath){
-        window.sessionStorage.activepath=activepath;
-        this.activepath=activepath;
-      }
+      // saveNavState(activepath){
+      //   window.sessionStorage.activepath=activepath;
+      //   this.activepath=activepath;
+      // }
   }
 }
 </script>
