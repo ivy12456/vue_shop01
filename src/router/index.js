@@ -9,6 +9,8 @@ import Router from 'vue-router';   //为了解决重复点击router-link报错
 import Rights from '../components/power/Rights.vue'
 import Roles from '../components/power/Roles.vue'
 import Cate from '../components/goods/Cate.vue'
+import GoodList from '../components/goods/List.vue'
+import Add from '../components/goods/add.vue'
 
 // 为了解决重复点击报错
 const originalPush = Router.prototype.push
@@ -30,6 +32,8 @@ var router= new VueRouter({
       {path:'/rights',component:Rights},
       {path:'/roles',component:Roles},
       {path:'/categories',component:Cate},
+      {path:'/goods',component:GoodList},
+      {path:'/goods/add',component:Add}
     ]}
   ]
 })
