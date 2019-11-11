@@ -38,3 +38,6 @@ html,body,#app{
 .ql-editor{
     min-height:300px!important
 }
+.el-cascader-panel{
+    height: 300px;
+}

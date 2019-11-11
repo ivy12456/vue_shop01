@@ -19,33 +19,80 @@
 
       <!-- 订单列表数据 -->
       <el-table :data="orderlist" border stripe>
-          <el-table-column type='index'></el-table-column>
-          <el-table-column label='订单编号' prop='order_number'></el-table-column>
-          <el-table-column label='订单价格' prop='order_price'></el-table-column>
-          <el-table-column label='是否付款' prop='pay_status'>
-              <template slot-scope="scope">
-                  <el-tag type="success">已付款</el-tag>
-                  <el-tag type="danger">未付款</el-tag>
-              </template>
-          </el-table-column>
-          <el-table-column label='是否发货' prop='is_send'></el-table-column>
-          <el-table-column label='下单时间' prop='create_time'>
-              <template slot-scope="scope">
-                  {{scope.row.create_time | dateFormat}}
-              </template>
-          </el-table-column>
-          <el-table-column label='操作'>
-              <template slot-scope="scope">
-                  <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
-                  <el-button size="mini" type="success" icon="el-icon-location"></el-button>
-              </template>
-          </el-table-column>
+        <el-table-column type="index" :index="index"></el-table-column>
+        <el-table-column label="订单编号" prop="order_number"></el-table-column>
+        <el-table-column label="订单价格" prop="order_price"></el-table-column>
+        <el-table-column label="是否付款" prop="pay_status">
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.pay_status">已付款</el-tag>
+            <el-tag type="danger" v-else>未付款</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否发货" prop="is_send"></el-table-column>
+        <el-table-column label="下单时间" prop="create_time">
+          <template slot-scope="scope">{{scope.row.create_time | dateFormat}}</template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" icon="el-icon-edit" @click="addressDialog"></el-button>
+            <el-button size="mini" type="success" icon="el-icon-location" @click="progressDialog"></el-button>
+          </template>
+        </el-table-column>
       </el-table>
+
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[5, 10,15]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+
+      <!-- 修改地址对话框 -->
+      <el-dialog
+        title="修改地址"
+        :visible.sync="addressDialogVisible"
+        width="50%"
+        @close="addressDialogClosed"
+      >
+        <el-form
+          :model="addressForm"
+          :rules="addressFormRules"
+          ref="addressFormRef"
+          label-width="100px"
+        >
+          <el-form-item label="省市区/县" prop="address1">
+            <el-cascader v-model="addressForm.address1" :options="citydata"></el-cascader>
+          </el-form-item>
+          <el-form-item label="详细地址" prop="address2">
+            <el-input v-model="addressForm.address2"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="addressDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addressDialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
+
+      <!-- 物流对话框 -->
+      <el-dialog title="物流消息" :visible.sync="progressDialogVisible" width="50%">
+        <el-timeline>
+          <el-timeline-item v-for="(activity, index) in progressInfo" :key="index" :timestamp="activity.time">{{activity.context}}</el-timeline-item>
+        </el-timeline>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="progressDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="progressDialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 
 <script>
+import citydata from "./citydata";
 export default {
   data() {
     return {
@@ -54,30 +101,71 @@ export default {
         pagenum: 1,
         pagesize: 10
       },
-      total:0,
-      orderlist:[],
+      total: 0,
+      orderlist: [],
+      addressDialogVisible: false,
+      addressForm: {
+        address1: [],
+        address2: ""
+      },
+      addressFormRules: {
+        address1: [{ required: true, message: "请选择区县", trigger: "blur" }],
+        address2: [{ required: true, message: "请选择区县", trigger: "blur" }]
+      },
+      citydata,
+      progressDialogVisible: false,
+      progressInfo: [],
     };
   },
   created() {
-    this.getOrderList()
+    this.getOrderList();
   },
   methods: {
     async getOrderList() {
-      const { data: res } = await this.$http.get('orders', {
+      const { data: res } = await this.$http.get("orders", {
         params: this.queryInfo
-      })
+      });
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取订单列表失败！')
+        return this.$message.error("获取订单列表失败！");
       }
 
-      console.log(res)
-      this.total = res.data.total
-      this.orderlist = res.data.goods
+      // console.log(res);
+      this.total = res.data.total;
+      this.orderlist = res.data.goods;
+    },
+    handleSizeChange(newsize) {
+      this.queryInfo.pagesize = newsize;
+      this.getOrderList();
+    },
+    handleCurrentChange(newpage) {
+      this.queryInfo.pagenum = newpage;
+      this.getOrderList();
+    },
+    addressDialog() {
+      this.addressDialogVisible = true;
+    },
+    addressDialogClosed() {
+      this.$refs.addressFormRef.resetFields();
+    },
+    async progressDialog() {
+      const { data: res } = await this.$http.get("/kuaidi/804909574412544580");
+      if (res.meta.status != 200)
+        return this.$message.error("获取物流信息失败");
+      this.progressInfo = res.data;
+      console.log(this.progressInfo);
+      this.progressDialogVisible = true;
+    }
+  },
+  computed: {
+    index() {
+      return (this.queryInfo.pagenum - 1) * this.queryInfo.pagesize + 1;
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "../../plugins/timeline/timeline.css";
+@import "../../plugins/timeline-item/timeline-item.css";
 </style>
