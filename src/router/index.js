@@ -13,7 +13,7 @@ import Cate from '../components/goods/Cate.vue'
 import Params from '../components/goods/Params.vue'
 import GoodList from '../components/goods/List.vue'
 import Add from '../components/goods/add.vue'
-import Order from '../components/order/Order.vue'
+import Report from '../components/report/Report.vue'
 
 
 // 为了解决重复点击报错
@@ -41,6 +41,7 @@ var router= new VueRouter({
       {path:'/goods',component:GoodList},
       {path:'/goods/add',component:Add},
       {path:'/orders',component:Order},
+      {path:'/reports',component:Report}
     ]}
   ]
 })
