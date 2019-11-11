@@ -351,7 +351,7 @@ export default {
     // 点击按钮，切换文本框
     showInput(row){
       row.inputVisible=true
-      // $$nextTick作用是，当页面元素被重新渲染之后，会调用里面的回调函数
+      // $nextTick作用是，当页面元素被重新渲染之后，会调用里面的回调函数
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus();
       });

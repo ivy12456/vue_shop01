@@ -15,6 +15,7 @@ import GoodList from '../components/goods/List.vue'
 import Add from '../components/goods/add.vue'
 import Order from '../components/order/Order.vue'
 
+
 // 为了解决重复点击报错
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
