@@ -129,8 +129,6 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error("获取订单列表失败！");
       }
-
-      // console.log(res);
       this.total = res.data.total;
       this.orderlist = res.data.goods;
     },
