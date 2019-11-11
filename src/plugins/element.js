@@ -31,10 +31,8 @@ import {
     Cascader,
     Alert,
     Tabs,
-    TabPane,
     Steps,
     Step,
-    Tabs,
     TabPane,
     CheckboxGroup,
     Checkbox,
@@ -76,8 +74,6 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Steps)
 Vue.use(Step)
-Vue.use(Tabs)
-Vue.use(TabPane)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
