@@ -58,7 +58,7 @@
             <el-input v-model="addCateForm.cat_name"></el-input>
         </el-form-item>
         <el-form-item label="父级分类" prop="cat_name" >
-            <el-cascader v-model="selectParentKeys" :options="ParentCatelist" :props="{expandTrigger: 'hover',value:'cat_id',label:'cat_name',children:'children'}" @change="parentCateChange" clearable></el-cascader>
+            <el-cascader v-model="selectParentKeys" :options="ParentCatelist" :props="{expandTrigger: 'hover',value:'cat_id',label:'cat_name',children:'children',checkStrictly:true}" @change="parentCateChange" clearable></el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
